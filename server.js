@@ -7,7 +7,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(cors()); // Allow requests from all origins (optional: configure for security)
+const corsOptions = {
+    origin: "*",  // Allow all domains
+    methods: "GET,POST,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization"
+};
+app.use(cors(corsOptions));
 
 const API_URL = "https://api.webengage.com/v1/accounts/58b004c1/users";
 const API_KEY = process.env.WEBENGAGE_API_KEY; // Using environment variables for security
