@@ -6,13 +6,14 @@ const fetch = require('node-fetch');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// CORS Configuration
+app.use(cors({
+    origin: "*",  // Adjust for production (e.g., origin: "https://yourfrontend.com")
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 app.use(express.json());
-const corsOptions = {
-    origin: "*",  // Allow all domains
-    methods: "GET,POST,OPTIONS",
-    allowedHeaders: "Content-Type,Authorization"
-};
-app.use(cors(corsOptions));
 
 const API_URL = "https://api.webengage.com/v1/accounts/58b004c1/users";
 const API_KEY = process.env.WEBENGAGE_API_KEY; // Using environment variables for security
