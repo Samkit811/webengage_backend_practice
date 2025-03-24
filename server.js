@@ -38,15 +38,28 @@ app.post('/api/webengage', async (req, res) => {
             body: JSON.stringify(req.body),
         });
 
+        const text = await response.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch {
+            data = { message: text };
+        }
+
         // explicitly set the CORS header in response
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-
-        const data = await response.json();
+        
         res.status(response.status).json(data);
     } catch (error) {
         console.error("Error:", error);
+
+        // add header to error section in order to avoid cors
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+        res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
